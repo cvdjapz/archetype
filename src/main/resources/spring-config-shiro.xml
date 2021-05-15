@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
-
-
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 
     <!-- 自定义凭证匹配器 -->
@@ -94,10 +90,11 @@
     <!--========================================================================================-->
 
     <!-- 基于Form表单的身份验证过滤器 -->
-    <bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
+    <!-- 基于表单的拦截器；如“/**=authc”，如果没有登录会跳到相应的登录页面登录；
+    -->
+    <bean id="formAuthenticationFilter" class="com.cug.lab.filter.MyFormAuthenticationFilter">
         <property name="usernameParam" value="username"/>
         <property name="passwordParam" value="password"/>
-        <property name="loginUrl" value="/login.page"/>
     </bean>
 
     <!--自定义过滤器-->
@@ -107,6 +104,10 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login.page"/>
+        <!-- successUrl配置只是做为一种附加配置，只有session中没有用户请求地址时才会使用successUrl。
+             系统默认的是认证成功后跳转到上一次请求的路径，如果是首次请求，那shiro就会跳转到默认虚拟路径“/”，
+             也就是跳转到index.jsp。 本项目已经重写了FormAuthenticationFilter并设置了默认的成功界面
+        -->
         <property name="filters">
             <util:map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
@@ -118,17 +119,17 @@
             <value>
                 <!--加载静态资源-->
                 /static/** = anon
-                /login.page = anon
+                /login.page = authc
                 /logout.page = logout
-                /authenticated.page = anon
-                /register.page = anon
+                /authenticated.page = authc
+                /register.page = authc
                 <!--所有的请求都要经过验证和满足自定的过滤器-->
-                <!-- /** = user,sysUser-->
-                /** = authc,sysUser
+                /** = user,sysUser
             </value>
         </property>
     </bean>
 
-
+    <!-- Shiro生命周期处理器-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
 </beans>

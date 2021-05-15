@@ -24,35 +24,21 @@
 		子标签设置其只扫描带有 @Controller 注解标注的类。
 	-->
 	<!-- 扫描所有的controller 但是不扫描service 避免扫描框架自带的包 -->
-	<context:component-scan  base-package="com.cug.lab" use-default-filters="false">
+	<context:component-scan  base-package="com.cug.lab.controller" use-default-filters="false">
 		<context:include-filter type="annotation"
 								expression="org.springframework.stereotype.Controller" />
 		<context:include-filter type="annotation"
 								expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
-		<context:exclude-filter type="annotation"
-								expression="org.springframework.stereotype.Service" />
+		<!--<context:exclude-filter type="annotation"
+								expression="org.springframework.stereotype.Service" />-->
 	</context:component-scan>
 
-	<!--  Shiro生命周期处理器
-            保证实现了Shiro内部lifecycle函数的bean执行-->
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
-	<!--启用Spring IOC容器Shiro注解，但必须配置了lifecycleBeanPostProcessor后才可以使用-->
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-		  depends-on="lifecycleBeanPostProcessor" />
-
-	<!--设置为true:启用cglib代理，设置为false:启用jdk代理（基于接口）-->
-	<aop:config proxy-target-class="true"></aop:config><!--在spring的配置文件中已经有了-->
-	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-		<property name="securityManager" ref="securityManager"/>
-	</bean>
-
-
- 	<!-- 同时也开启了json格式的支持,
+	<!-- 同时也开启了json格式的支持,
  		 当controller中返回的是bean或者是其他java对象的时候，自动将其转化为json对象
  		 需要在controller方法上加上@ResponseBody
 	-->
- 	<mvc:annotation-driven>
+	<mvc:annotation-driven>
 		<!--??????????????????????-->
 		<mvc:argument-resolvers>
 			<bean class="com.cug.lab.web.method.CurrentUserMethodArgumentResolver"/>
@@ -77,13 +63,26 @@
 		<property name="contentType" value="text/html;charset=UTF-8"/>
 	</bean>
 
-
 	<!-- 控制器异常处理 -->
 	<bean id="exceptionHandlerExceptionResolver"
 		  class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
 	</bean>
 	<!--引入自定义异常-->
 	<bean class="com.cug.lab.exception.DefaultExceptionHandler"/>
+
+	<!--设置为true:启用cglib代理，设置为false:启用jdk代理（基于接口）-->
+	<aop:config proxy-target-class="true"></aop:config><!--在spring的配置文件中已经有了-->
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager"/>
+	</bean>
+
+
+
+
+
+
+
+
 
 
 
