@@ -12,6 +12,6 @@ public interface SysUserMapper {
     SysUser findOne(Long userId);
 
     List<SysUser> findAll();
-
+    public int getTotle();
     SysUser findByUsername(String username);
 }

@@ -15,4 +15,5 @@ public interface SysRoleMapper {
     public SysRole findOne(Long roleId);
     public List<SysRole> findListByName(@Param("roles") Set<String> set);
     public List<SysRole> findAll();
+    public int getTotle();
 }

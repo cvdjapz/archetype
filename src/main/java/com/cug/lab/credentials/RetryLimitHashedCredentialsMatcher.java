@@ -39,9 +39,9 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
         String dbPassword = (String) info.getCredentials();
         //根据用户名获取到的密码
         SysUser user = userService.findByUsername(username);
-        user.setPassword(password);
+        user.setUserPsd(password);
         passwordHelper.decryptPassword(user);
-        return this.equals(user.getPassword(), dbPassword);
+        return this.equals(user.getUserPsd(), dbPassword);
 
     }
 }

@@ -11,63 +11,72 @@ public class SysRole  implements Serializable {
 
     private static final long serialVersionUID = 1782953758109023915L;
 
-    private Long id; //编号
-    private String role; //角色标识 程序中判断使用,如"admin"
-    private String description; //角色描述,UI界面显示使用
-    private String resourceIds; //拥有的资源
-    private Boolean available = Boolean.FALSE; //是否可用,如果不可用将不会添加给用户
+    private Long roleId; //编号
+    private String roleName; //角色标识 程序中判断使用,如"admin"
+    private String roleDescription; //角色描述,UI界面显示使用
+    private Integer roleLevel; //角色权重
+    private String roleResourceIds; //拥有的资源
+    private Boolean roleAvailable = Boolean.FALSE; //是否可用,如果不可用将不会添加给用户
 
 
 
     public SysRole() {
     }
 
-    public SysRole(String role, String description, Boolean available) {
-        this.role = role;
-        this.description = description;
-        this.available = available;
+    public SysRole(String roleName, String roleDescription, Boolean roleAvailable,Integer roleLevel) {
+        this.roleName = roleName;
+        this.roleLevel = roleLevel;
+        this.roleDescription = roleDescription;
+        this.roleAvailable = roleAvailable;
     }
 
-    public Long getId() {
-        return id;
+    public Integer getRoleLevel() {
+        return roleLevel;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRoleLevel(Integer roleLevel) {
+        this.roleLevel = roleLevel;
     }
 
-    public String getRole() {
-        return role;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
-
-    public String getResourceIds() {
-        return resourceIds;
+    public String getRoleDescription() {
+        return roleDescription;
     }
 
-    public void setResourceIds(String resourceIds) {
-        this.resourceIds = resourceIds;
+    public void setRoleDescription(String roleDescription) {
+        this.roleDescription = roleDescription;
+    }
+
+    public String getRoleResourceIds() {
+        return roleResourceIds;
+    }
+
+    public void setRoleResourceIds(String roleResourceIds) {
+        this.roleResourceIds = roleResourceIds;
     }
 
     /* 通过roleids字符串设置resourceIdList */
     public List<Long> getResourceIdList() {
         ArrayList<Long> resourceIdList = new ArrayList<Long>();
-        if(StringUtils.isEmpty(resourceIds)) {
+        if(StringUtils.isEmpty(roleResourceIds)) {
 
         }else{
-            String[] arr = resourceIds.split(",");
+            String[] arr = roleResourceIds.split(",");
             if(arr != null || arr.length > 0){
                 for (int i = 0 ; i < arr.length ; i++){
                     if(StringUtils.isEmpty(arr[i])){
@@ -92,15 +101,15 @@ public class SysRole  implements Serializable {
             s.append(resourceId);
             s.append(",");
         }
-        this.resourceIds =  s.toString();
+        this.roleResourceIds =  s.toString();
     }
 
-    public Boolean getAvailable() {
-        return available;
+    public Boolean getRoleAvailable() {
+        return roleAvailable;
     }
 
-    public void setAvailable(Boolean available) {
-        this.available = available;
+    public void setRoleAvailable(Boolean roleAvailable) {
+        this.roleAvailable = roleAvailable;
     }
 
     @Override
@@ -110,24 +119,25 @@ public class SysRole  implements Serializable {
 
         SysRole role = (SysRole) o;
 
-        if (id != null ? !id.equals(role.id) : role.id != null) return false;
+        if (roleId != null ? !roleId.equals(role.roleId) : role.roleId != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return roleId != null ? roleId.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", role='" + role + '\'' +
-                ", description='" + description + '\'' +
-                ", resourceIds=" + resourceIds +
-                ", available=" + available +
+        return "SysRole{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                ", roleDescription='" + roleDescription + '\'' +
+                ", roleLevel=" + roleLevel +
+                ", roleResourceIds='" + roleResourceIds + '\'' +
+                ", roleAvailable=" + roleAvailable +
                 '}';
     }
 }

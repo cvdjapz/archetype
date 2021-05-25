@@ -92,9 +92,29 @@
     <!-- 基于Form表单的身份验证过滤器 -->
     <!-- 基于表单的拦截器；如“/**=authc”，如果没有登录会跳到相应的登录页面登录；
     -->
+    <!--
+    -
+    -
+    -
+    -MyFormAuthenticationFilter
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -好像表单中不能改  - 要做的是把user类改为userName he passWord
+    -
+    -
+    -
+    -
+    -
+    先恢复了 初始  后面再继续改 -->
     <bean id="formAuthenticationFilter" class="com.cug.lab.filter.MyFormAuthenticationFilter">
-        <property name="usernameParam" value="username"/>
-        <property name="passwordParam" value="password"/>
+        <property name="usernameParam" value="userName"/>
+        <property name="passwordParam" value="userPsd"/>
     </bean>
 
     <!--自定义过滤器-->

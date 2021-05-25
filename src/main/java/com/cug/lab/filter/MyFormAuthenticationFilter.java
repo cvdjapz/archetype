@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
 
-* @Description:    自定义FormAuthenticationFilter
-* @Author:         lzt
-* @CreateDate:     2019/1/14
-* @Version:        1.0
-*/
+ * @Description:    自定义FormAuthenticationFilter
+ * @Author:         lzt
+ * @CreateDate:     2019/1/14
+ * @Version:        1.0
+ */
 public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
     /*自定义session失效跳转页面
       successUrl配置只是做为一种附加配置，只有session中没有用户请求地址时才会使用successUrl。
@@ -24,6 +24,13 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
     */
     // 制定session跳转url
     private final String successUrl = "/homepage.page";
+
+    //可以改变UsernameParam
+  /*  public MyFormAuthenticationFilter() {
+        super();
+        super.setUsernameParam("userName");
+        super.setPasswordParam("passWord");
+    }*/
 
     @Override
     protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
@@ -34,7 +41,7 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
      * 默认的isAccessAllowed在判断有用户登录时直接返回true，后面的拦截器就不会继续执行，所以登录之后，
      * 在不退出登录的情况下，返回登录界面是无法登录的，所以在这里重写方法，如果判断存在已经登录的用户
      * 在执行登录之前将其退出
-    */
+     */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
     {

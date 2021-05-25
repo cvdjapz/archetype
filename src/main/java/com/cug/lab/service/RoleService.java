@@ -35,4 +35,5 @@ public interface RoleService {
      * @return
      */
     Set<String> findPermissions(Long[] roleIds);
+    int getTotle();
 }

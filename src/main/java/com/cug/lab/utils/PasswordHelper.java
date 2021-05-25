@@ -37,22 +37,22 @@ public class PasswordHelper {
 
     //设置盐 同时加密密码加密密码
     public void encryptPassword(SysUser user) {
-        user.setSalt(randomNumberGenerator.nextBytes().toHex());
+        user.setUserSalt(randomNumberGenerator.nextBytes().toHex());
         String newPassword = new SimpleHash(
                 algorithmName,
-                user.getPassword(),
+                user.getUserPsd(),
                 ByteSource.Util.bytes(user.getCredentialsSalt()),
                 hashIterations).toHex();
-        user.setPassword(newPassword);
+        user.setUserPsd(newPassword);
     }
 
     //加密密码 不会设置盐 用于密码匹配
     public void decryptPassword(SysUser user) {
         String newPassword = new SimpleHash(
                 algorithmName,
-                user.getPassword(),
+                user.getUserPsd(),
                 ByteSource.Util.bytes(user.getCredentialsSalt()),
                 hashIterations).toHex();
-        user.setPassword(newPassword);
+        user.setUserPsd(newPassword);
     }
 }

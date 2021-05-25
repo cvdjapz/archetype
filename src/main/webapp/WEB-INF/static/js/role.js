@@ -1,55 +1,8 @@
-//格式化日期栏
-function dateFormatter(value) {
-	console.log(value);
-	var date = new Date(value);
-	var year = date.getFullYear().toString();
-	var month = (date.getMonth() + 1);
-	var day = date.getDate().toString();
-	var hour = date.getHours().toString();
-	var minutes = date.getMinutes().toString();
-	var seconds = date.getSeconds().toString();
-	if (month < 10) {
-		month = "0" + month;
-	}
-	if (day < 10) {
-		day = "0" + day;
-	}
-	if (hour < 10) {
-		hour = "0" + hour;
-	}
-	if (minutes < 10) {
-		minutes = "0" + minutes;
-	}
-	if (seconds < 10) {
-		seconds = "0" + seconds;
-	}
-	return year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":"
-			+ seconds;
-}
-//格式化角色栏
-function toRole(value) {
-	var role = "";
-	if (value == 3) {
-		role = "超级管理员";
-	} else if (value == 2) {
-		role = "管理员";
-	} else {
-		role = "普通用户";
-	}
-	return role;
-}
-//格式化地址栏
-function toAddress(value) {
-	var city = "其他,北京市,天津市,河北省,山西省,内蒙古自治区,辽宁省,吉林省,黑龙江省,上海市,江苏省,浙江省,安徽省,福建省,江西省,山东省,"
-			+ "河南省,湖北省,湖南省,广东省,海南省,广西壮族自治区,甘肃省,陕西省,新疆维吾尔自治区,青海省,宁夏回族自治区,重庆市,四川省,"
-			+ "贵州省,云南省,西藏自治区,台湾省,澳门特别行政区,香港特别行政区,海外";
-	var citys = city.split(',');
-	return citys[value];
-}
+
 //格式化操作栏
 function opera(value, row, index) {
-	return '<a href="#" style="color:rgb(0,125,220)" onclick="openEditUserDialog('
-			+ row.userId
+	return '<a href="#" style="color:rgb(0,125,220)" onclick="openEditRoleDialog('
+		/*	+ row.userId
 			+ ',\''
 			+ row.userName
 			+ ' \','
@@ -61,25 +14,25 @@ function opera(value, row, index) {
 			+ '\','
 			+ row.userAddress
 			+ ','
-			+ row.userCreateTime
+			+ row.userCreateTime*/
 			+ ')">编辑</a>&nbsp;&nbsp;|&nbsp;&nbsp;'
-			+ '<a href="#" style="color:red" onclick="deleteOneUser('
-			+ row.userId + ',\'  ' + row.userName + ' \')">删除</a>';
+			+ '<a href="#" style="color:red" onclick="deleteOneRole()">删除</a>';//onclick="deleteOneRole('
+		/*	+ row.userId + ',\'  ' + row.userName + ' \')">删除</a>';*/
 }
-//打开添加用户的窗口
-function openAddUserDialog() {
-	$('#add_dialog_userName').textbox('setValue', '');
+//打开添加的窗口
+function openAddRoleDialog() {
+/*	$('#add_dialog_userName').textbox('setValue', '');
 	$('#add_dialog_userRole').combobox('setValue', 1);
 	$('#add_dialog_userPsd').textbox('setValue', '');
 	$('#readd_dialog_userPsd').textbox('setValue', '');
 	$('#add_dialog_userCompany').textbox('setValue', '');
-	$('#add_dialog_userAddress').combobox('setValue', 0);
+	$('#add_dialog_userAddress').combobox('setValue', 0);*/
 	$('#add_dlg').dialog('open');
 }
-//打开编辑用户的窗口
-function openEditUserDialog(userId, userName, userCode, userRole, userCompany,
-		userAddress, userCreateTime) {
-	$('#dialog_userId').textbox('textbox').attr('disabled', true); //设置输入框为禁用
+//打开编辑的窗口
+function openEditRoleDialog(/*userId, userName, userCode, userRole, userCompany,
+		userAddress, userCreateTime*/) {
+	/*$('#dialog_userId').textbox('textbox').attr('disabled', true); //设置输入框为禁用
 	$('#dialog_userName').textbox('textbox').attr('disabled', true); //设置输入框为禁用
 	$('#dialog_userCode').textbox('textbox').attr('disabled', true); //设置输入框为禁用
 	$('#dialog_userRole').textbox('textbox').attr('disabled', true); //设置输入框为禁用
@@ -91,12 +44,13 @@ function openEditUserDialog(userId, userName, userCode, userRole, userCompany,
 	$('#dialog_userRole').textbox('setValue', toRole(userRole));
 	$('#dialog_userCompany').textbox('setValue', userCompany);
 	$('#dialog_userAddress').combobox('setValue', userAddress);
-	$('#dialog_userCreateTime').textbox('setValue',dateFormatter(userCreateTime));
+	$('#dialog_userCreateTime').textbox('setValue',dateFormatter(userCreateTime));*/
 	$('#dlg').dialog('open');
 }
 //删除单个角色  
-function deleteOneUser(userId, userName) {
-	$.messager.confirm('删除', '您确认想要删除' + userName + '用户吗？', function(r) {
+function deleteOneRole(userId, userName) {
+	$.messager.alert('提示', "deleteOneUser");
+	/*$.messager.confirm('删除', '您确认想要删除' + userName + '用户吗？', function(r) {
 		if (r) {
 			$.ajax({
 				type : "POST",
@@ -122,11 +76,12 @@ function deleteOneUser(userId, userName) {
 				}
 			});
 		}
-	});
+	});*/
 }
 //批量删除角色 
-function deleteListUser() {
-	var ids = [];
+function deleteListRole() {
+	$.messager.alert('提示', "deleteListRole");
+	/*var ids = [];
 	var rows = $('#dg').datagrid('getSelections');
 	for (var i = 0; i < rows.length; i++) {
 		ids.push(rows[i].userId);
@@ -159,12 +114,12 @@ function deleteListUser() {
 						}
 					});
 				}
-			});
-
+			});*/
 }
 //新增用户
-function addUser() {
-	var userPsd = $('#add_dialog_userPsd').textbox('getValue');
+function addRole() {
+	$.messager.alert('提示', "addRole");
+	/*var userPsd = $('#add_dialog_userPsd').textbox('getValue');
 	var reuserPsd = $('#readd_dialog_userPsd').textbox('getValue');
 	if (userPsd == reuserPsd) {
 		$('#add_dlg_f').form('submit', {
@@ -187,11 +142,12 @@ function addUser() {
 		});
 	} else {
 		$.messager.alert('警告', "两次密码不一致！");
-	}
+	}*/
 }
 //编辑用户
-function editUser() {
-	$('#dlg_f').form('submit', {
+function editRole() {
+	$.messager.alert('提示', "editRole");
+	/*$('#dlg_f').form('submit', {
 		url : "updateUser.json",
 		success : function(data) {
 			//ajax成功后返回的数据是json对象，但是easyui的form表单返回时是json字符串，需要转化成json对象
@@ -208,46 +164,9 @@ function editUser() {
 		onLoadError : function() {
 			$.messager.alert('提示', "编辑失败！");
 		}
+	});*/
+}
 
-	});
-}
-//通过用户名 或者编号所搜
-function searcher(value, name) {
-	value = value.replace(/\s+/g, "");
-	$('#dg').datagrid('load', {
-		"value" : value,
-		"name" : name,
-	});
-}
-//通过地址搜索
-function searchByAddress() {
-	var address = $('#searchByAddress').combobox('getValue');
-	if (address == null || address == '') {
-		address = '0';
-	}
-	$('#dg').datagrid('load', {
-		"value" : address,
-		"name" : "userAdress",
-	});
-}
-//通过角色搜索
-function searchByRole() {
-	var role = $('#searchByRole').combobox('getValue');
-	if (role == null || role == '') {
-		role = '1';
-	}
-	$('#dg').datagrid('load', {
-		"value" : role,
-		"name" : "userRole",
-	});
-}
-//重置数据
-function reloaddata() {
-	$('#dg').datagrid('load', {
-		"value" : '',
-		"name" : '',
-	});
-}
 // 打印函數
 function CreateFormPage(strPrintName, printDatagrid) {// strPrintName 打印任务名   printDatagrid 要打印的datagrid
 	var tableString = '<table cellspacing="0" class="pb">';

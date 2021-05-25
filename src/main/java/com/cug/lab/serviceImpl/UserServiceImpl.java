@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
      */
     public void changePassword(Long userId, String newPassword) {
         SysUser user =userDao.findOne(userId);
-        user.setPassword(newPassword);
+        user.setUserPsd(newPassword);
         passwordHelper.encryptPassword(user);
         userDao.updateUser(user);
     }
@@ -97,6 +97,11 @@ public class UserServiceImpl implements UserService {
             return Collections.EMPTY_SET;
         }
         return roleService.findPermissions(user.getRoleIdList().toArray(new Long[0]));
+    }
+
+    @Override
+    public int getTotle() {
+        return userDao.getTotle();
     }
 
 }

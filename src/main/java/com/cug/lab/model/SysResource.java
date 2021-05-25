@@ -6,14 +6,15 @@ public class SysResource implements Serializable {
 
     private static final long serialVersionUID = 8300548177048947510L;
 
-    private Long id; //编号
-    private String name; //资源名称
-    private ResourceType type = ResourceType.menu; //资源类型
-    private String url; //资源路径
-    private String permission; //权限字符串
-    private Long parentId; //父编号
-    private String parentIds; //父编号列表
-    private Boolean available = Boolean.FALSE;
+    private Long resId; //编号
+    private String resName; //资源名称
+    private ResourceType resType = ResourceType.menu; //资源类型
+    private String resUrl; //资源路径
+    private String resPermission; //权限字符串
+    private Long resParentId; //父编号
+    private String resParentIds; //父编号列表
+    private String resIcon; //图标
+    private Boolean resAvailable = Boolean.FALSE;
 
     public static enum ResourceType {
         menu("菜单"),page("页面"), button("按钮");
@@ -26,78 +27,84 @@ public class SysResource implements Serializable {
         }
     }
 
-
-
-    public Long getId() {
-        return id;
+    public Long getResId() {
+        return resId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setResId(Long resId) {
+        this.resId = resId;
     }
 
-    public String getName() {
-        return name;
+    public String getResName() {
+        return resName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setResName(String resName) {
+        this.resName = resName;
     }
 
-    public ResourceType getType() {
-        return type;
+    public ResourceType getResType() {
+        return resType;
     }
 
-    public void setType(ResourceType type) {
-        this.type = type;
+    public void setResType(ResourceType resType) {
+        this.resType = resType;
     }
 
-    public String getUrl() {
-        return url;
+    public String getResUrl() {
+        return resUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setResUrl(String resUrl) {
+        this.resUrl = resUrl;
     }
 
-    public String getPermission() {
-        return permission;
+    public String getResPermission() {
+        return resPermission;
     }
 
-    public void setPermission(String permission) {
-        this.permission = permission;
+    public void setResPermission(String resPermission) {
+        this.resPermission = resPermission;
     }
 
-    public Long getParentId() {
-        return parentId;
+    public Long getResParentId() {
+        return resParentId;
     }
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+    public void setResParentId(Long resParentId) {
+        this.resParentId = resParentId;
     }
 
-    public String getParentIds() {
-        return parentIds;
+    public String getResParentIds() {
+        return resParentIds;
     }
 
-    public void setParentIds(String parentIds) {
-        this.parentIds = parentIds;
+    public void setResParentIds(String resParentIds) {
+        this.resParentIds = resParentIds;
     }
 
-    public Boolean getAvailable() {
-        return available;
+    public String getResIcon() {
+        return resIcon;
     }
 
-    public void setAvailable(Boolean available) {
-        this.available = available;
+    public void setResIcon(String resIcon) {
+        this.resIcon = resIcon;
+    }
+
+    public Boolean getResAvailable() {
+        return resAvailable;
+    }
+
+    public void setResAvailable(Boolean resAvailable) {
+        this.resAvailable = resAvailable;
     }
 
     public boolean isRootNode() {
-        return parentId == 0;
+        return resParentId == 0;
     }
 
     public String makeSelfAsParentIds() {
-        return getParentIds() + getId() + "/";
+        return getResParentIds() + getResId() + "/";
     }
     @Override
     public boolean equals(Object o) {
@@ -106,27 +113,28 @@ public class SysResource implements Serializable {
 
         SysResource resource = (SysResource) o;
 
-        if (id != null ? !id.equals(resource.id) : resource.id != null) return false;
+        if (resId != null ? !resId.equals(resource.resId) : resource.resId != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return resId != null ? resId.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "Resource{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", url="+ url +
-                ", permission='" + permission + '\'' +
-                ", parentId=" + parentId +
-                ", parentIds='" + parentIds + '\'' +
-                ", available=" + available +
+        return "SysResource{" +
+                "resId=" + resId +
+                ", resName='" + resName + '\'' +
+                ", resType=" + resType +
+                ", resUrl='" + resUrl + '\'' +
+                ", resPermission='" + resPermission + '\'' +
+                ", resParentId=" + resParentId +
+                ", resParentIds='" + resParentIds + '\'' +
+                ", resIcon='" + resIcon + '\'' +
+                ", resAvailable=" + resAvailable +
                 '}';
     }
 }

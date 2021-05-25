@@ -9,10 +9,7 @@ import com.cug.lab.service.ResourceService;
 import com.cug.lab.service.RoleService;
 import com.cug.lab.service.UserService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
@@ -48,6 +45,10 @@ public class LoginController {
             error = "用户名错误!";
         } else if(IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
             error = "密码错误!";
+        }  else if(LockedAccountException.class.getName().equals(exceptionClassName)) {
+            error = "锁定的帐号!";
+        }  else if(ExpiredCredentialsException.class.getName().equals(exceptionClassName)) {
+            error = "锁定的帐号!";
         } else if(exceptionClassName != null) {
             error = "其他错误：" + exceptionClassName;
         }
@@ -59,9 +60,9 @@ public class LoginController {
     public String homepage(HttpServletRequest servletRequest, Model model)
     {
         SysUser user = (SysUser) servletRequest.getAttribute(Constants.CURRENT_USER);
-        Set<String> set = userService.findRoles(user.getUsername());
+        Set<String> set = userService.findRoles(user.getUserName());
         List<SysRole> roleList = roleService.findListByName(set);
-        Set<String> permissions = userService.findPermissions(user.getUsername());
+        Set<String> permissions = userService.findPermissions(user.getUserName());
         Map<String , List<SysResource>>  menus = resourceService.findMenus(permissions);
         model.addAttribute("roles", roleList);
         model.addAttribute("menus", menus);
@@ -81,7 +82,6 @@ public class LoginController {
 
     @RequestMapping("/register.page")
     public String register(){
-        System.out.println("register.page");
         return "register";
     }
 

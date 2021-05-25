@@ -29,7 +29,6 @@ public class UserRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.setRoles(userService.findRoles(username));
         authorizationInfo.setStringPermissions(userService.findPermissions(username));
-        System.out.println("调用了获取用户所有角色和权限");
         return authorizationInfo;
     }
 
@@ -46,13 +45,13 @@ public class UserRealm extends AuthorizingRealm {
         if(user == null) {
             throw new UnknownAccountException();//没找到帐号
         }
-        if(Boolean.TRUE.equals(user.getLocked())) {
+        if(Boolean.TRUE.equals(user.getUserLocked())) {
             throw new LockedAccountException(); //帐号锁定
         }
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                user.getUsername(), //用户名
-                user.getPassword(), //密码
+                user.getUserName(), //用户名
+                user.getUserPsd(), //密码
                 ByteSource.Util.bytes(user.getCredentialsSalt()),//salt=username+salt
                 getName()  //realm name
         );

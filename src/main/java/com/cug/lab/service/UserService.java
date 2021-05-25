@@ -49,4 +49,10 @@ public interface UserService {
      */
     public Set<String> findPermissions(String username);
 
+    /**
+     * 根据用户名查找其权限
+     * @param
+     * @return
+     */
+    public int getTotle();
 }

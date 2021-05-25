@@ -11,10 +11,12 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-2-14
- * <p>Version: 1.0
- */
+
+* @Description:
+* @Author:         lzt
+* @CreateDate:     2019/1/21
+* @Version:        1.0
+*/
 @Service
 
 public class ResourceServiceImpl implements ResourceService {
@@ -52,8 +54,8 @@ public class ResourceServiceImpl implements ResourceService {
         Set<String> permissions = new HashSet<String>();
         for(Long resourceId : resourceIds) {
             SysResource resource = findOne(resourceId);
-            if(resource != null && !StringUtils.isEmpty(resource.getPermission())) {
-                permissions.add(resource.getPermission());
+            if(resource != null && !StringUtils.isEmpty(resource.getResPermission())) {
+                permissions.add(resource.getResPermission());
             }
         }
         return permissions;
@@ -70,16 +72,16 @@ public class ResourceServiceImpl implements ResourceService {
             if(resource.isRootNode()) {
                 continue;
             }
-            if(resource.getType().equals(SysResource.ResourceType.button)) {
+            if(resource.getResType().equals(SysResource.ResourceType.button)) {
                 continue;
             }
-            if(resource.getType().equals(SysResource.ResourceType.page)) {
+            if(resource.getResType().equals(SysResource.ResourceType.page)) {
                 if(!hasPermission(permissions, resource)) {
                     continue;
                 }
                 pages.add(resource);
             }
-            if(resource.getType().equals(SysResource.ResourceType.menu)){
+            if(resource.getResType().equals(SysResource.ResourceType.menu)){
                 if(!hasPermission(permissions, resource)) {
                     continue;
                 }
@@ -92,15 +94,20 @@ public class ResourceServiceImpl implements ResourceService {
         return map;
     }
 
+    @Override
+    public int getTotle() {
+        return resourceDao.getTotle();
+    }
+
     //传过来的permissions就是用户获得的所有的
     private boolean hasPermission(Set<String> permissions, SysResource resource) {
         //为空返回真
-        if(StringUtils.isEmpty(resource.getPermission())) {
+        if(StringUtils.isEmpty(resource.getResPermission())) {
             return true;
         }
         for(String permission : permissions) {
             WildcardPermission p1 = new WildcardPermission(permission);
-            WildcardPermission p2 = new WildcardPermission(resource.getPermission());
+            WildcardPermission p2 = new WildcardPermission(resource.getResPermission());
             if(p1.implies(p2) || p2.implies(p1)) {
                 return true;
             }

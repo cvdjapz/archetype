@@ -13,5 +13,5 @@ public interface SysResourceMapper {
 
     SysResource findOne(Long resourceId);
     List<SysResource> findAll();
-
+    public int getTotle();
 }

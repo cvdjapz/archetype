@@ -55,7 +55,7 @@ public class RoleServiceImpl implements RoleService {
         for(Long roleId : roleIds) {
             SysRole role = findOne(roleId);
             if(role != null) {
-                roles.add(role.getRole());
+                roles.add(role.getRoleName());
             }
         }
         return roles;
@@ -72,5 +72,10 @@ public class RoleServiceImpl implements RoleService {
             }
         }
         return resourceService.findPermissions(resourceIds);
+    }
+
+    @Override
+    public int getTotle() {
+        return roleDao.getTotle();
     }
 }

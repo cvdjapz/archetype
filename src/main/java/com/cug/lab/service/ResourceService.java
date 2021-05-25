@@ -6,10 +6,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-1-28
- * <p>Version: 1.0
- */
+
+* @Description:    资源操作service层
+* @Author:         lzt
+* @CreateDate:     2019/1/21
+* @Version:        1.0
+*/
 public interface ResourceService {
 
 
@@ -33,4 +35,11 @@ public interface ResourceService {
      * @return
      */
     Map<String , List<SysResource>> findMenus(Set<String> permissions);
+
+    /**
+     * 获取资源总数
+     * @param
+     * @return
+     */
+    int getTotle();
 }

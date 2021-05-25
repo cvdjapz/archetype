@@ -1,69 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cug.lab.dao.SysResourceMapper" >
-  <resultMap id="BaseResultMap" type="com.cug.lab.model.SysResource" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="url" property="url" jdbcType="VARCHAR" />
-    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
-    <result column="parent_ids" property="parentIds" jdbcType="VARCHAR" />
-    <result column="permission" property="permission" jdbcType="VARCHAR" />
-    <result column="available" property="available" jdbcType="BIT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, name, type, url, parent_id, parent_ids, permission, available
+<mapper namespace="com.cug.lab.dao.SysResourceMapper">
+    <resultMap id="BaseResultMap" type="com.cug.lab.model.SysResource">
+        <id column="resId" property="resId" jdbcType="BIGINT"/>
+        <result column="resName" property="resName" jdbcType="VARCHAR"/>
+        <result column="resType" property="resType" jdbcType="VARCHAR"/>
+        <result column="resUrl" property="resUrl" jdbcType="VARCHAR"/>
+        <result column="resParentId" property="resParentId" jdbcType="BIGINT"/>
+        <result column="resParentIds" property="resParentIds" jdbcType="VARCHAR"/>
+        <result column="resIcon" property="resIcon" jdbcType="VARCHAR"/>
+        <result column="resPermission" property="resPermission" jdbcType="VARCHAR"/>
+        <result column="resAvailable" property="resAvailable" jdbcType="BIT"/>
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    resId, resName, resType, resUrl, resParentId, resParentIds, resPermission, resIcon, resAvailable
   </sql>
 
-  <insert id="createResource" parameterType="com.cug.lab.model.SysResource" >
-    insert into sys_resource (name, type, url, parent_id, parent_ids, permission, available)
-    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
-      #{url,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, #{parentIds,jdbcType=VARCHAR},
-      #{permission,jdbcType=VARCHAR}, #{available,jdbcType=BIT})
+    <insert id="createResource" parameterType="com.cug.lab.model.SysResource">
+    insert into sys_resource (resName, resType, resUrl, resParentId, resParentIds, resPermission, resIcon, resAvailable)
+    values (#{resName,jdbcType=VARCHAR}, #{resType,jdbcType=VARCHAR},
+      #{resUrl,jdbcType=VARCHAR}, #{resParentId,jdbcType=BIGINT}, #{resParentIds,jdbcType=VARCHAR},
+      #{resPermission,jdbcType=VARCHAR}, , #{resIcon,jdbcType=BIGINT}, #{resAvailable,jdbcType=BIT})
   </insert>
 
-  <update id="updateResource" parameterType="com.cug.lab.model.SysResource" >
-    update sys_resource
-    <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null" >
-        url = #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="parentId != null" >
-        parent_id = #{parentId,jdbcType=BIGINT},
-      </if>
-      <if test="parentIds != null" >
-        parent_ids = #{parentIds,jdbcType=VARCHAR},
-      </if>
-      <if test="permission != null" >
-        permission = #{permission,jdbcType=VARCHAR},
-      </if>
-      <if test="available != null" >
-        available = #{available,jdbcType=BIT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    <update id="updateResource" parameterType="com.cug.lab.model.SysResource">
+        update sys_resource
+        <set>
+            <if test="resName != null">
+                resName = #{resName,jdbcType=VARCHAR},
+            </if>
+            <if test="resType != null">
+                resType = #{resType,jdbcType=VARCHAR},
+            </if>
+            <if test="resUrl != null">
+                resUrl = #{resUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="resParentId != null">
+                resParentId = #{resParentId,jdbcType=BIGINT},
+            </if>
+            <if test="resParentIds != null">
+                resParentIds = #{resParentIds,jdbcType=VARCHAR},
+            </if>
+            <if test="resPermission != null">
+                resPermission = #{resPermission,jdbcType=VARCHAR},
+            </if>
+            <if test="resIcon != null">
+                resIcon = #{resIcon,jdbcType=VARCHAR},
+            </if>
+            <if test="resAvailable != null">
+                resAvailable = #{resAvailable,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
-  <delete id="deleteResource" parameterType="java.lang.Long" >
+    <delete id="deleteResource" parameterType="java.lang.Long">
     delete from sys_resource
-    where id = #{id,jdbcType=BIGINT}
+    where resId = #{resId,jdbcType=BIGINT}
   </delete>
 
-  <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select <include refid="Base_Column_List" />
-    from sys_resource
-    where id = #{id,jdbcType=BIGINT}
-  </select>
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_resource
+        where resId = #{resId,jdbcType=BIGINT}
+    </select>
 
-  <select id="findAll" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select <include refid="Base_Column_List" />
-    from sys_resource
-  </select>
-
+    <select id="findAll" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_resource
+    </select>
+    <select id="getTotle" resultType="Integer">
+       select count(*)
+        from sys_role
+      </select>
 </mapper>
