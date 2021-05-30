@@ -30,7 +30,7 @@
             <th field="userId" checkbox=true align="center">ID</th>
             <th field="userName" width="40" align="center">用户名</th>
             <th field="userCode" width="50" align="center">用户编码</th>
-            <th field="userRoleIds" width="60" align="center" >用户角色</th>
+            <th field="userRoleIds" width="60" align="center" formatter="toRole">用户角色</th>
             <th field="userCompany" width="150" align="center">用户单位</th>
             <th field="userAddress" width="80" align="center">用户地址</th>
             <th field="userCreateTime" width="100" align="center" formatter="dateFormatter">创建时间</th>
@@ -44,27 +44,31 @@
     <div style="padding-left: 12px">
         <a href="#" class="easyui-linkbutton" iconCls="icon-newadduser" onclick="openAddUserDialog()" plain="true"></a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-newdelete" onclick="deleteListUser()" plain="true"></a>
+
         <input id="searchbox" class="easyui-searchbox" style="width:250px"
                data-options="searcher:searcher,prompt:'请输入要搜索的值',menu:'#searchboxmenu'"></input>
         <div id="searchboxmenu" style="width:100px">
             <div data-options="name:'userName'">用户名</div>
             <div data-options="name:'userCode'">用户编码</div>
         </div>
+
+
         <a href="#" class="easyui-linkbutton" plain="true">|</a>
-      <!--  <select id="searchByAddress" class="easyui-combobox" name="userAddress" editable="false"
+        <select id="searchByAddress" class="easyui-combobox" name="userAddress" editable="false"
                 style="width:120px;height:32px;"
                 url="../../sys/user/getCity.json" valueField="id" textField="name">
-        </select>-->
+        </select>
         <a href="#" class="easyui-linkbutton" plain="true" style="color:rgb(0,125,220)"
            onclick="searchByAddress()">省份查询</a>
+
         <a href="#" class="easyui-linkbutton" plain="true">|</a>
+
         <select id="searchByRole" class="easyui-combobox" name="userAddress" editable="false"
-                style="width:120px;height:32px;">
-            <option value="2">管理员</option>
-            <option value="1">普通用户</option>
+                style="width:120px;height:32px;" url="../../sys/user/getRoleType.json"  valueField="roleId" textField="roleDescription">
         </select>
         <a href="#" class="easyui-linkbutton" plain="true" style="color:rgb(0,125,220)"
            onclick="searchByRole()">角色查询</a>
+
         <a href="#" class="easyui-linkbutton" plain="true">|</a>
         <a href="#" class="easyui-linkbutton" plain="true" style="color:rgb(0,125,220)" onclick="reloaddata()">重置数据</a>
 
@@ -143,8 +147,7 @@
 					text:'添加',
 					iconCls:'icon-newadd',
 					handler:function(){
-					addUser();
-
+					    addUser();
 					}
 				},{
 					text:'取消',
@@ -165,7 +168,6 @@
             </tr>
             <tr>
                 <td colspan=2>
-
                 </td>
             </tr>
             <tr>
@@ -181,16 +183,14 @@
             <tr>
                 <td>重复密码:</td>
                 <td><input id="readd_dialog_userPsd" data-options="required:true" class="easyui-textbox" type="text"
-                           name="reuserPsd" style="width:200px;height:32px;"></input></td>
+                           name="re_userPsd" style="width:200px;height:32px;"></input></td>
             </tr>
             <tr>
                 <td>用户角色:</td>
                 <td>
-                    <select id="add_dialog_userRole" class="easyui-combobox" name="userRole"
-                            style="width:200px;height:32px;" editable="false">
-                        <option value="2">管理员</option>
-                        <option value="1">普通用户</option>
-                    </select>
+                    <select id="add_dialog_userRole" data-options="required:true" class="easyui-combobox" name="userRoleIds" editable="false"
+                            style="width:200px;height:32px;"
+                            url="../../sys/user/getRoleType.json" valueField="roleId" textField="roleDescription"></select>
                 </td>
             </tr>
             <tr>
@@ -201,7 +201,7 @@
             <tr>
                 <td>用户地址:</td>
                 <td>
-                    <select id="add_dialog_userAddress" class="easyui-combobox" name="userAddress" editable="false"
+                    <select id="add_dialog_userAddress" data-options="required:true" class="easyui-combobox" name="userAddress" editable="false"
                             style="width:200px;height:32px;"
                             url="../../sys/user/getCity.json" valueField="id" textField="name"></select>
                 </td>

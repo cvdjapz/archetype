@@ -4,13 +4,13 @@ import com.cug.lab.dao.SysUserMapper;
 import com.cug.lab.model.SysUser;
 import com.cug.lab.service.RoleService;
 import com.cug.lab.service.UserService;
+import com.cug.lab.utils.Page;
 import com.cug.lab.utils.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,20 +26,33 @@ public class UserServiceImpl implements UserService {
      * 创建用户
      * @param user
      */
-    public SysUser createUser(SysUser user) {
+    public int createUser(SysUser user) {
         //加密密码
         passwordHelper.encryptPassword(user);
         return userDao.createUser(user);
     }
 
     @Override
-    public SysUser updateUser(SysUser user) {
+    public int updateUser(SysUser user) {
         return userDao.updateUser(user);
     }
 
     @Override
-    public void deleteUser(Long userId) {
-        userDao.deleteUser(userId);
+    public int deleteUser(Long userId) {
+        return userDao.deleteUser(userId);
+    }
+
+    @Override
+    public int deleteListUser(String[] ids) {
+        List<Integer> list = new ArrayList<Integer>();
+        if(ids!=null && ids.length > 0) {
+            for (int i = 0; i < ids.length; i++) {
+                list.add(Integer.parseInt(ids[i]));
+            }
+            return userDao.deleteListUser(list);
+        }else {
+            return 0;
+        }
     }
 
     /**
@@ -60,8 +73,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SysUser> findAll() {
-        return userDao.findAll();
+    public List<SysUser> findAll(Page page) {
+        page.setCourent();
+        return userDao.findAll(page);
+    }
+
+    @Override
+    public List<SysUser> findAllBy(Page page, SysUser sysUser) {
+        Map<String , Object> map = new HashMap<String , Object>();
+        page.setCourent();
+        map.put("page" , page);
+        map.put("sysUser" , sysUser);
+        return userDao.findAllBy(map);
     }
 
     /**
@@ -100,8 +123,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getTotle() {
+    public int getUserTotle() {
         return userDao.getTotle();
+    }
+
+    @Override
+    public Boolean checkName(SysUser user) {
+        if(userDao.checkName(user).size() > 0) {
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    @Override
+    public int getUserTotleBy(SysUser sysUser) {
+        return  userDao.getUserTotleBy(sysUser);
     }
 
 }

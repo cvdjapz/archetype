@@ -20,7 +20,8 @@
   </sql>
 
   <insert id="createUser" parameterType="com.cug.lab.model.SysUser" >
-    insert into sys_user (userCode, userName, userPsd, userSalt, userRoleIds, userLocked,userCompany,userAddress,userCreateTime)
+    insert into sys_user (userCode, userName, userPsd, userSalt, userRoleIds,
+        userLocked,userCompany,userAddress,userCreateTime)
     values (#{userCode,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR},
       #{userPsd,jdbcType=VARCHAR}, #{userSalt,jdbcType=VARCHAR}, #{userRoleIds,jdbcType=VARCHAR},
       #{userLocked,jdbcType=BIT},#{userCompany,jdbcType=VARCHAR}, #{userAddress,jdbcType=VARCHAR},
@@ -66,17 +67,25 @@
     where userId = #{userId,jdbcType=BIGINT}
   </delete>
 
+  <delete id="deleteListUser" parameterType="java.util.List">
+    DELETE FROM sys_user
+    where userId in
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
   <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select
-    <include refid="Base_Column_List" />
+    select <include refid="Base_Column_List" />
     from sys_user
     where userId = #{userId,jdbcType=BIGINT}
   </select>
 
-  <select id="findAll" resultMap="BaseResultMap"  >
+  <select id="findAll" resultMap="BaseResultMap" parameterType="com.cug.lab.utils.Page" >
     select
     <include refid="Base_Column_List" />
     from sys_user
+    limit #{courent},#{rows}
   </select>
 
   <select id="findByUsername" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -88,6 +97,48 @@
   <select id="getTotle" resultType="Integer" >
    select count(*)
     from sys_user
+  </select>
+  <select id="checkName" resultMap="BaseResultMap" parameterType="com.cug.lab.model.SysUser">
+    select *
+    from sys_user
+    where userName = #{userName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getUserTotleBy" resultType="Integer" parameterType="com.cug.lab.model.SysUser">
+    select count(*)
+    from sys_user
+    where 1=1
+      <if test="userName != null" >
+        and userName = #{userName}
+      </if>
+      <if test="userCode != null" >
+        and userCode = #{userCode}
+      </if>
+      <if test="userAddress != null" >
+        and userAddress = #{userAddress}
+      </if>
+      <if test="userRoleIds != null" >
+        and userRoleIds = #{userRoleIds}
+      </if>
+  </select>
+
+  <select id="findAllBy" resultMap="BaseResultMap" parameterType="map">
+    select *
+    from sys_user
+   	where 1 = 1
+    <if test="sysUser.userName != null" >
+      and userName = #{sysUser.userName}
+    </if>
+    <if test="sysUser.userCode != null" >
+      and userCode = #{sysUser.userCode}
+    </if>
+    <if test="sysUser.userAddress != null" >
+      and userAddress = #{sysUser.userAddress}
+    </if>
+    <if test="sysUser.userRoleIds != null" >
+      and userRoleIds = #{sysUser.userRoleIds}
+    </if>
+    limit #{page.courent},#{page.rows}
   </select>
 
 </mapper>

@@ -1,6 +1,5 @@
 //格式化日期栏
 function dateFormatter(value) {
-	console.log(value);
 	var date = new Date(value);
 	var year = date.getFullYear().toString();
 	var month = (date.getMonth() + 1);
@@ -26,25 +25,32 @@ function dateFormatter(value) {
 	return year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":"
 			+ seconds;
 }
-//格式化角色栏
+//格式化角色栏--在线获取角色id 描述 然后进行匹配
 function toRole(value) {
+	var rolelist = new Array();
 	var role = "";
-	if (value == 3) {
-		role = "超级管理员";
-	} else if (value == 2) {
-		role = "管理员";
-	} else {
-		role = "普通用户";
+	$.ajax({
+		type : "POST",
+		url : "getRole.json",
+		cache : false,
+		async : false,
+		dataType : "json",
+		traditional : true,//防止深度序列化
+		success : function(data) {
+			for (var i = 0; i < data.length; i++) {
+				rolelist[i] = data[i].roleId + "," + data[i].roleDescription;
+			}
+		},
+		error : function(err) {
+			$.messager.alert('提示', "获取角色列表失败！");
+		}
+	});
+	for (var i = 0; i < rolelist.length; i++) {
+		if(value == rolelist[i].split(",")[0]){
+			role = rolelist[i].split(",")[1]
+		}
 	}
 	return role;
-}
-//格式化地址栏
-function toAddress(value) {
-	var city = "其他,北京市,天津市,河北省,山西省,内蒙古自治区,辽宁省,吉林省,黑龙江省,上海市,江苏省,浙江省,安徽省,福建省,江西省,山东省,"
-			+ "河南省,湖北省,湖南省,广东省,海南省,广西壮族自治区,甘肃省,陕西省,新疆维吾尔自治区,青海省,宁夏回族自治区,重庆市,四川省,"
-			+ "贵州省,云南省,西藏自治区,台湾省,澳门特别行政区,香港特别行政区,海外";
-	var citys = city.split(',');
-	return citys[value];
 }
 //格式化操作栏
 function opera(value, row, index) {
@@ -52,33 +58,34 @@ function opera(value, row, index) {
 			+ row.userId
 			+ ',\''
 			+ row.userName
-			+ ' \','
+			+ '\','
 			+ row.userCode
 			+ ','
-			+ row.userRole
+			+ row.userRoleIds
 			+ ',\''
 			+ row.userCompany
-			+ '\','
+			+ '\',\''
 			+ row.userAddress
-			+ ','
+			+ '\','
 			+ row.userCreateTime
-			+ ')">编辑</a>&nbsp;&nbsp;|&nbsp;&nbsp;'
+			+ ',\''
+			+ row.userLocked
+			+ '\')">编辑</a>&nbsp;&nbsp;|&nbsp;&nbsp;'
 			+ '<a href="#" style="color:red" onclick="deleteOneUser('
 			+ row.userId + ',\'  ' + row.userName + ' \')">删除</a>';
 }
 //打开添加用户的窗口
 function openAddUserDialog() {
 	$('#add_dialog_userName').textbox('setValue', '');
-	$('#add_dialog_userRole').combobox('setValue', 1);
 	$('#add_dialog_userPsd').textbox('setValue', '');
 	$('#readd_dialog_userPsd').textbox('setValue', '');
 	$('#add_dialog_userCompany').textbox('setValue', '');
+	/*$('#add_dialog_userRole').combobox('setValue', 2);*/
 	$('#add_dialog_userAddress').combobox('setValue', 0);
 	$('#add_dlg').dialog('open');
 }
 //打开编辑用户的窗口
-function openEditUserDialog(userId, userName, userCode, userRole, userCompany,
-		userAddress, userCreateTime) {
+function openEditUserDialog(userId, userName, userCode, userRole, userCompany,userAddress, userCreateTime) {
 	$('#dialog_userId').textbox('textbox').attr('disabled', true); //设置输入框为禁用
 	$('#dialog_userName').textbox('textbox').attr('disabled', true); //设置输入框为禁用
 	$('#dialog_userCode').textbox('textbox').attr('disabled', true); //设置输入框为禁用
@@ -88,10 +95,13 @@ function openEditUserDialog(userId, userName, userCode, userRole, userCompany,
 	$('#dialog_userId').textbox('setValue', userId);
 	$('#dialog_userName').textbox('setValue', userName);
 	$('#dialog_userCode').textbox('setValue', userCode);
+	//todo
 	$('#dialog_userRole').textbox('setValue', toRole(userRole));
 	$('#dialog_userCompany').textbox('setValue', userCompany);
 	$('#dialog_userAddress').combobox('setValue', userAddress);
+	//转
 	$('#dialog_userCreateTime').textbox('setValue',dateFormatter(userCreateTime));
+
 	$('#dlg').dialog('open');
 }
 //删除单个角色  
@@ -227,7 +237,7 @@ function searchByAddress() {
 	}
 	$('#dg').datagrid('load', {
 		"value" : address,
-		"name" : "userAdress",
+		"name" : "userAddress",
 	});
 }
 //通过角色搜索
@@ -238,8 +248,8 @@ function searchByRole() {
 	}
 	$('#dg').datagrid('load', {
 		"value" : role,
-		"name" : "userRole",
-	});
+		"name" : "userRoleIds",
+	});reloaddata
 }
 //重置数据
 function reloaddata() {
@@ -344,10 +354,10 @@ function CreateFormPage(strPrintName, printDatagrid) {// strPrintName 打印任�
 			} else { //======================自己添加的判斷===========================
 				if (nl[j].f == 'userCreateTime') {
 					tableString += dateFormatter(rows[i][nl[j].f]);
-				} else if (nl[j].f == 'userRole') {
+				} else if (nl[j].f == 'userRoleIds') {
 					tableString += toRole(rows[i][nl[j].f]);
 				} else if (nl[j].f == 'userAddress') {
-					tableString += toAddress(rows[i][nl[j].f]);
+					tableString += rows[i][nl[j].f];//toAddress(rows[i][nl[j].f]);
 				} else if (nl[j].f == 'opera') {
 					tableString += '';
 				} else {
