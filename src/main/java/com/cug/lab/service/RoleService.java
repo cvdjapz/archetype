@@ -14,10 +14,10 @@ import java.util.Set;
 public interface RoleService {
 
 
-    public SysRole createRole(SysRole role);
-    public SysRole updateRole(SysRole role);
-    public void deleteRole(Long roleId);
-
+    public int createRole(SysRole role);
+    public int updateRole(SysRole role);
+    public int deleteRole(Long roleId);
+    public int deleteListUser(String[] ids);
     public SysRole findOne(Long roleId);
     public List<SysRole> findListByName(Set<String> set);
     public List<SysRole> findAll();

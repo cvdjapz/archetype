@@ -20,10 +20,10 @@
     <!--<logger name="xxx" level="INFO">-->
         <!--<appender-ref ref="permission"/>-->
     <!--</logger>-->
-    <!--<logger name="dao" level="DEBUG">-->
-        <!--&lt;!&ndash;daoFILE为实际定义的appender&ndash;&gt;-->
-        <!--<appender-ref ref="daoFILE" />-->
-    <!--</logger>-->
+  <!--  <logger name="dao" level="DEBUG">
+        &lt;!&ndash;daoFILE为实际定义的appender&ndash;&gt;
+        <appender-ref ref="daoFILE" />
+    </logger>-->
     <!-- TRACE < DEBUG < INFO < WARN < ERROR -->
     <root level="INFO">
         <appender-ref ref="STDOUT" />

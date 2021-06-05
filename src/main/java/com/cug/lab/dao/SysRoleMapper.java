@@ -8,10 +8,10 @@ import java.util.Set;
 
 public interface SysRoleMapper {
 
-    public SysRole createRole(SysRole role);
-    public SysRole updateRole(SysRole role);
-    public void deleteRole(Long roleId);
-
+    public int createRole(SysRole role);
+    public int updateRole(SysRole role);
+    public int deleteRole(Long roleId);
+    int deleteListUser(List<Integer> ids);
     public SysRole findOne(Long roleId);
     public List<SysRole> findListByName(@Param("roles") Set<String> set);
     public List<SysRole> findAll();

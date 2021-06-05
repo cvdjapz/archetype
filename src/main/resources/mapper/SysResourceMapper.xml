@@ -19,10 +19,10 @@
   </sql>
 
     <insert id="createResource" parameterType="com.cug.lab.model.SysResource">
-    insert into sys_resource (resName, resType, resUrl, resParentId, resParentIds, resPermission, resIcon, resAvailable)
-    values (#{resName,jdbcType=VARCHAR}, #{resType,jdbcType=VARCHAR},
+    insert into sys_resource (resId , resName, resType, resUrl, resParentId, resParentIds, resPermission, resIcon, resAvailable)
+    values (#{resId,jdbcType=BIGINT},#{resName,jdbcType=VARCHAR}, #{resType,jdbcType=VARCHAR},
       #{resUrl,jdbcType=VARCHAR}, #{resParentId,jdbcType=BIGINT}, #{resParentIds,jdbcType=VARCHAR},
-      #{resPermission,jdbcType=VARCHAR}, , #{resIcon,jdbcType=BIGINT}, #{resAvailable,jdbcType=BIT})
+      #{resPermission,jdbcType=VARCHAR},  #{resIcon,jdbcType=BIGINT}, #{resAvailable,jdbcType=BIT})
   </insert>
 
     <update id="updateResource" parameterType="com.cug.lab.model.SysResource">
@@ -68,11 +68,20 @@
         where resId = #{resId,jdbcType=BIGINT}
     </select>
 
+    <select id="findChildsByParentId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_resource
+        where resParentId = #{resParentId,jdbcType=BIGINT}
+    </select>
+
+
     <select id="findAll" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
         from sys_resource
     </select>
+
     <select id="getTotle" resultType="Integer">
        select count(*)
         from sys_role

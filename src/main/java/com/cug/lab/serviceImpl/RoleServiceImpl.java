@@ -7,6 +7,7 @@ import com.cug.lab.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,16 +22,29 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private ResourceService resourceService;
 
-    public SysRole createRole(SysRole role) {
+    public int createRole(SysRole role) {
         return roleDao.createRole(role);
     }
 
-    public SysRole updateRole(SysRole role) {
+    public int updateRole(SysRole role) {
         return roleDao.updateRole(role);
     }
 
-    public void deleteRole(Long roleId) {
-        roleDao.deleteRole(roleId);
+    public int deleteRole(Long roleId) {
+        return roleDao.deleteRole(roleId);
+    }
+
+    @Override
+    public int deleteListUser(String[] ids) {
+        List<Integer> list = new ArrayList<Integer>();
+        if(ids!=null && ids.length > 0) {
+            for (int i = 0; i < ids.length; i++) {
+                list.add(Integer.parseInt(ids[i]));
+            }
+            return roleDao.deleteListUser(list);
+        }else {
+            return 0;
+        }
     }
 
     @Override

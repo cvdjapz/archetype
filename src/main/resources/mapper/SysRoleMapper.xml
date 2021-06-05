@@ -15,10 +15,10 @@
   </sql>
 
     <insert id="createRole" parameterType="com.cug.lab.model.SysRole">
-    insert into sys_role ( roleName, roleDescription, roleResourceIds, roleAvailable, roleLevel)
-    values (#{roleName,jdbcType=VARCHAR}, #{roleDescription,jdbcType=VARCHAR},
-      #{roleResourceIds,jdbcType=VARCHAR}, #{roleAvailable,jdbcType=BIT}), #{roleLevel,jdbcType=INTEGER})
-  </insert>
+        insert into sys_role ( roleName,roleLevel,roleDescription, roleResourceIds, roleAvailable)
+        values (#{roleName,jdbcType=VARCHAR}, #{roleLevel,jdbcType=INTEGER}, #{roleDescription,jdbcType=VARCHAR},
+          #{roleResourceIds,jdbcType=VARCHAR}, #{roleAvailable,jdbcType=BIT})
+      </insert>
 
     <update id="updateRole" parameterType="com.cug.lab.model.SysRole">
         update sys_role
@@ -47,6 +47,14 @@
     where roleId = #{roleId,jdbcType=BIGINT}
   </delete>
 
+    <delete id="deleteListUser" parameterType="java.util.List">
+        DELETE FROM sys_role
+        where roleId in
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
     <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
@@ -55,10 +63,11 @@
     </select>
 
     <select id="findListByName" resultMap="BaseResultMap" parameterType="java.util.Set">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from sys_role
         where roleName in
-        <foreach collection="roles"  item="item" open="(" separator="," close=")">
+        <foreach collection="roles" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
     </select>
@@ -69,7 +78,7 @@
         from sys_role
     </select>
 
-    <select id="getTotle" resultType="Integer" >
+    <select id="getTotle" resultType="Integer">
    select count(*)
     from sys_role
   </select>

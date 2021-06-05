@@ -53,7 +53,7 @@
                     <ul>
                         <#list menus["pages"] as page>
                             <#if page.resParentId = menu.resId>
-                                <li><a href="#" data="${page.resUrl}"
+                                <li><a href="#" data="${(page.resUrl)!''}"
                                        class="easyui-linkbutton c1"
                                        data-options="plain:true,iconCls:'${(page.resIcon)!''}',toggle:true,group:'g1'"
                                        style="width: 100%; text-align: left; padding-left: 20px">${(page.resName!'')}</a>

@@ -1,32 +1,32 @@
-package com.cug.lab.model;
+package com.cug.lab.utils;
 
-import java.io.Serializable;
 
-public class SysResource implements Serializable {
+import com.cug.lab.model.SysResource;
 
-    private static final long serialVersionUID = 8300548177048947510L;
+import java.util.ArrayList;
+import java.util.List;
 
+public class TreegridResFather <T>{
     private Long resId; //编号
     private String resName; //资源名称
-    private ResourceType resType = ResourceType.menu; //资源类型
+    private SysResource.ResourceType resType ; //资源类型
     private String resUrl; //资源路径
     private String resPermission; //权限字符串
     private Long resParentId; //父编号
     private String resParentIds; //父编号列表
     private String resIcon; //图标
-    private Boolean resAvailable = Boolean.FALSE;
+    private Boolean resAvailable;
 
-    public static enum ResourceType {
-        menu("菜单"),page("页面"), button("按钮");
-
-        private final String info;
-        private ResourceType(String info) {
-            this.info = info;
-        }
-        public String getInfo() {
-            return info;
-        }
+    public String getState() {
+        return state;
     }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    private String state = "closed";
+    private List<T>  children = new ArrayList<T>();
 
     public Long getResId() {
         return resId;
@@ -44,11 +44,11 @@ public class SysResource implements Serializable {
         this.resName = resName;
     }
 
-    public ResourceType getResType() {
+    public SysResource.ResourceType getResType() {
         return resType;
     }
 
-    public void setResType(ResourceType resType) {
+    public void setResType(SysResource.ResourceType resType) {
         this.resType = resType;
     }
 
@@ -100,33 +100,33 @@ public class SysResource implements Serializable {
         this.resAvailable = resAvailable;
     }
 
-    public boolean isRootNode() {
-        return resParentId == 0;
+    public List<T> getChildren() {
+        return children;
     }
 
-    public String makeSelfAsParentIds() {
-        return getResParentIds() + getResId() + "/";
-    }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SysResource resource = (SysResource) o;
-
-        if (resId != null ? !resId.equals(resource.resId) : resource.resId != null) return false;
-
-        return true;
+    public void setChildren(List<T> children) {
+        this.children = children;
     }
 
-    @Override
-    public int hashCode() {
-        return resId != null ? resId.hashCode() : 0;
+    public TreegridResFather() {
+
+    }
+
+    public TreegridResFather(Long resId, String resName, SysResource.ResourceType resType, String resUrl, String resPermission, Long resParentId, String resParentIds, String resIcon, Boolean resAvailable) {
+        this.resId = resId;
+        this.resName = resName;
+        this.resType = resType;
+        this.resUrl = resUrl;
+        this.resPermission = resPermission;
+        this.resParentId = resParentId;
+        this.resParentIds = resParentIds;
+        this.resIcon = resIcon;
+        this.resAvailable = resAvailable;
     }
 
     @Override
     public String toString() {
-        return "SysResource{" +
+        return "TreegridResMenu{" +
                 "resId=" + resId +
                 ", resName='" + resName + '\'' +
                 ", resType=" + resType +
@@ -136,6 +136,7 @@ public class SysResource implements Serializable {
                 ", resParentIds='" + resParentIds + '\'' +
                 ", resIcon='" + resIcon + '\'' +
                 ", resAvailable=" + resAvailable +
+                ", children=" + children +
                 '}';
     }
 }

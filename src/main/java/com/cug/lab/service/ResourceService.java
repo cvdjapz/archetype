@@ -15,12 +15,14 @@ import java.util.Set;
 public interface ResourceService {
 
 
-    public SysResource createResource(SysResource resource);
+    public int createResource(SysResource resource);
     public SysResource updateResource(SysResource resource);
     public void deleteResource(Long resourceId);
 
     SysResource findOne(Long resourceId);
     List<SysResource> findAll();
+
+    List<SysResource> findChildsByParentId(Long resParentId);
 
     /**
      * 得到资源对应的权限字符串
@@ -42,4 +44,6 @@ public interface ResourceService {
      * @return
      */
     int getTotle();
+
+
 }

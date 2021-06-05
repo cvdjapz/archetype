@@ -25,7 +25,7 @@ public class ResourceServiceImpl implements ResourceService {
     private SysResourceMapper resourceDao;
 
     @Override
-    public SysResource createResource(SysResource resource) {
+    public int createResource(SysResource resource) {
         return resourceDao.createResource(resource);
     }
 
@@ -47,6 +47,11 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public List<SysResource> findAll() {
         return resourceDao.findAll();
+    }
+
+    @Override
+    public List<SysResource> findChildsByParentId(Long resParentId) {
+        return resourceDao.findChildsByParentId(resParentId);
     }
 
     @Override

@@ -1,13 +1,13 @@
 #data{
-	width:90%;
-	height:95%;
-	margin: auto;
-    position: absolute;
-    top: 0;
-    right:0;
-    bottom: 0;
-    left: 0;
-}
+	 width:90%;
+	 height:95%;
+	 margin: auto;
+	 position: absolute;
+	 top: 0;
+	 right:0;
+	 bottom: 0;
+	 left: 0;
+ }
 .datagrid-cell{
 	font-size:13px;
 }
